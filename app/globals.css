@@ -1,26 +1,48 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─── Tailwind v4: class-based dark mode variant ─── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ─── MOSAIC Design Tokens ─────────────────────────
+   These are set synchronously by the inline <script> in layout.jsx
+   BEFORE first paint, so there is NEVER an un-themed frame.
+   Default = light theme (no localStorage entry → light).
+   ──────────────────────────────────────────────── */
+:root,
+:root.light {
+  --bg-page:    #F4F4F5;
+  --bg-surface: #FDFDFD;
+  --bg-main:    #FDFDFD;
+  --fg-primary: #080808;
+  --fg-meta:    #7F7B82;
+  --border:     rgba(0,0,0,0.08);
+  color-scheme: light;
 }
 
+:root.dark {
+  --bg-page:    #080808;
+  --bg-surface: #111111;
+  --bg-main:    #0f0f0f;
+  --fg-primary: #FDFDFD;
+  --fg-meta:    #7F7B82;
+  --border:     rgba(255,255,255,0.06);
+  color-scheme: dark;
+}
+
+/* ─── Base: html + body are always themed ────────── */
+html,
+body {
+  background-color: var(--bg-page);
+  color: var(--fg-primary);
+  /* Smooth transition only after JS hydration to avoid flash */
+  transition: background-color 0.15s ease, color 0.15s ease;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100%;
+  margin: 0;
+}
+
+/* ─── Tailwind theme tokens (used by AppShell, etc.) ─ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
